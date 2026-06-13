@@ -76,6 +76,16 @@ assertSameValue(true, count($stateCities) > 0, 'State cities relation should not
 $citySearch = request($application, '/api/cities/search/denp');
 assertSameValue(true, count($citySearch) > 0, 'City contains search should return data.');
 assertSameValue(true, count($citySearch) <= 100, 'Search result exceeds the limit.');
+assertSameValue(true, array_key_exists('state_name', $citySearch[0]), 'City search must include state_name.');
+assertSameValue(true, array_key_exists('country_name', $citySearch[0]), 'City search must include country_name.');
+assertSameValue(true, is_string($citySearch[0]['state_name']), 'City state_name must be a string.');
+assertSameValue(true, is_string($citySearch[0]['country_name']), 'City country_name must be a string.');
+
+$exactCitySearch = request($application, '/api/cities/search/aba');
+assertSameValue(true, count($exactCitySearch) > 0, 'City exact search should return data.');
+assertSameValue('Aba', $exactCitySearch[0]['name'] ?? null, 'Short city search must use exact matching.');
+assertSameValue(true, is_string($exactCitySearch[0]['state_name'] ?? null), 'Exact search must include state_name.');
+assertSameValue(true, is_string($exactCitySearch[0]['country_name'] ?? null), 'Exact search must include country_name.');
 
 assertSameValue([], request($application, '/api/cities/search/den'), 'Short search must use exact matching.');
 assertSameValue([], request($application, '/api/countries/abc'), 'Invalid ID must return an empty array.');

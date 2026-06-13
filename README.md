@@ -106,6 +106,26 @@ Pencarian dengan keyword 1 sampai 3 karakter menggunakan exact match.
 Keyword lebih dari 3 karakter menggunakan pencarian `LIKE '%keyword%'`.
 Hasil pencarian dibatasi maksimal 100 baris.
 
+Hasil `GET /api/cities/search/{keyword}` memuat seluruh field city serta field
+tambahan `state_name` dan `country_name`.
+
+Contoh:
+
+```json
+[
+  {
+    "id": 56428,
+    "state_id": 1822,
+    "name": "Denpasar",
+    "latitude": "-8.65000000",
+    "longitude": "115.21667000",
+    "timezone_id": 239,
+    "state_name": "Bali",
+    "country_name": "Indonesia"
+  }
+]
+```
+
 ## Menjalankan Secara Lokal
 
 Jalankan dari root project:

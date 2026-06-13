@@ -95,6 +95,31 @@ final class GeoRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function searchCitiesWithRelations(string $keyword): array
+    {
+        $exactMatch = mb_strlen($keyword, 'UTF-8') <= 3;
+        $operator = $exactMatch ? '=' : 'LIKE';
+        $value = $exactMatch ? $keyword : '%' . $keyword . '%';
+
+        $statement = $this->database->connection()->prepare(
+            "SELECT `cities`.*, `states`.`name` AS `state_name`,
+                    `countries`.`name` AS `country_name`
+             FROM `cities`
+             INNER JOIN `states` ON `states`.`id` = `cities`.`state_id`
+             INNER JOIN `countries` ON `countries`.`id` = `states`.`country_id`
+             WHERE `cities`.`name` {$operator} :keyword
+             ORDER BY `cities`.`name` ASC
+             LIMIT 100",
+        );
+        $statement->bindValue(':keyword', $value, PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
     private function allowedTable(string $table): string
     {
         if (!in_array($table, self::TABLES, true)) {

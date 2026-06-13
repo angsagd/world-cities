@@ -149,6 +149,10 @@ final class ApiApplication
             return [];
         }
 
+        if ($table === 'cities') {
+            return $this->repository->searchCitiesWithRelations($keyword);
+        }
+
         return $this->repository->searchByName($table, $keyword);
     }
 
