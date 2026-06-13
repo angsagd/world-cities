@@ -1,0 +1,7 @@
+RewriteEngine On
+
+RewriteRule ^(?:config|database|specification|src|storage)(?:/|$) - [F,L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
