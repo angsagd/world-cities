@@ -16,3 +16,7 @@ $RECYCLE.BIN/
 *.swo
 *.swn
 *.swop
+config/database.php
+storage/logs/*.log
+database/
+specification/
